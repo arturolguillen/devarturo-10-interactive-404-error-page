@@ -14,7 +14,9 @@ import "./../styles/global.css";
         <Font cssVariable="--font-plus-jakarta-sans" preload />
         <Font cssVariable="--font-jetbrains-mono" preload />
     </head>
-    <body>
+    <body
+        class="min-h-dvh bg-slate-950 text-slate-100 flex flex-col justify-between selection:bg-indigo-500 selection:text-white relative overflow-x-hidden antialiased"
+    >
         <slot />
     </body>
 </html>
