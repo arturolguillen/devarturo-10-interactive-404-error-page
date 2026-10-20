@@ -1,4 +1,5 @@
 <section
+    data-mascot
     aria-label="Interactive Mascot"
     class="relative mb-6 select-none group"
 >
@@ -10,8 +11,8 @@
 
     <!-- RobotCard -->
     <div
+        id="mascot-face"
         class="relative w-44 h-44 sm:w-52 sm:h-52 bg-slate-900/90 border-2 border-indigo-500/30 rounded-3xl p-4 sm:p-5 flex flex-col items-center justify-between shadow-2xl backdrop-blur-xl transition-transform duration-150 ease-out"
-        style="transform: perspective(600px) rotateY(-1.73967deg) rotateX(-4.35198deg);"
     >
         <!-- RobotStatusAntennas -->
         <div class="w-full flex items-center justify-between px-2 pt-1">
@@ -38,7 +39,7 @@
         >
             <!-- RobotDigitalScanlineOverlay -->
             <div
-                class="absolute inset-0 bg-[linear-gradient(to_bottom,transparent_50%,rgba(0,0,0,0.6)_51%)] bg-[length:100%_4px] pointer-events-none opacity-40"
+                class="absolute inset-0 bg-[linear-gradient(to_bottom,transparent_50%,rgba(0,0,0,0.6)_51%)] bg-size-[100%_4px] pointer-events-none opacity-40"
             >
             </div>
 
@@ -49,7 +50,6 @@
                 <div
                     id="left-pupil"
                     class="w-4 h-4 sm:w-5 sm:h-5 rounded-full bg-cyan-400 shadow-[0_0_12px_rgba(34,211,238,0.9)] transition-transform duration-75 ease-out"
-                    style="transform: translate(-3.61134px, 8.24368px);"
                 >
                 </div>
             </div>
@@ -61,7 +61,6 @@
                 <div
                     id="right-pupil"
                     class="w-4 h-4 sm:w-5 sm:h-5 rounded-full bg-cyan-400 shadow-[0_0_12px_rgba(34,211,238,0.9)] transition-transform duration-75 ease-out"
-                    style="transform: translate(-3.61134px, 8.24368px);"
                 >
                 </div>
             </div>
@@ -80,6 +79,7 @@
 
     <!-- RobotInteractiveButton -->
     <button
+        id="poke-mascot-btn"
         type="button"
         class="mt-3 text-xs font-medium text-slate-400 hover:text-indigo-300 transition-colors inline-flex items-center gap-1.5 bg-slate-900/60 border border-slate-800 hover:border-slate-700 px-2.5 py-1 rounded-full cursor-pointer"
     >
@@ -100,3 +100,120 @@
         <span>Poke bot for reaction</span>
     </button>
 </section>
+
+<script>
+    const pokeReactions = [
+        "Bzzzt! Quantum core recalibrated!",
+        "I'm searching, captain! Nothing here yet.",
+        "Ouch! Watch the sub-routines!",
+        "Error 404: Coffee reserve depleted ☕",
+        "Analyzing space-time coordinates... 🌌",
+        "Systems nominal, route still lost!",
+    ];
+
+    function initMascot() {
+        const root = document.querySelector("[data-mascot]");
+        const face = root?.querySelector("#mascot-face");
+        const leftPupil = root?.querySelector("#left-pupil");
+        const rightPupil = root?.querySelector("#right-pupil");
+        const statusText = root?.querySelector("#mascot-status");
+        const pokeButton = root?.querySelector("#poke-mascot-btn");
+
+        if (
+            !(face instanceof HTMLElement) ||
+            !(leftPupil instanceof HTMLElement) ||
+            !(rightPupil instanceof HTMLElement) ||
+            !(statusText instanceof HTMLElement) ||
+            !(pokeButton instanceof HTMLButtonElement)
+        ) {
+            return;
+        }
+
+        const pointer = { x: 0, y: 0 };
+        const center = { x: 0, y: 0 };
+        let frameId = 0;
+        let trackingLocked = false;
+        let reactionTimer = 0;
+
+        const measure = () => {
+            const rect = face.getBoundingClientRect();
+            center.x = rect.left + rect.width / 2;
+            center.y = rect.top + rect.height / 2;
+        };
+
+        const applyPointer = () => {
+            frameId = 0;
+            if (trackingLocked) return;
+
+            const deltaX = pointer.x - center.x;
+            const deltaY = pointer.y - center.y;
+            const angle = Math.atan2(deltaY, deltaX);
+            const distance = Math.min(9, Math.hypot(deltaX, deltaY) / 18);
+            const moveX = Math.cos(angle) * distance;
+            const moveY = Math.sin(angle) * distance;
+            const pupilTransform = `translate(${moveX}px, ${moveY}px)`;
+
+            leftPupil.style.transform = pupilTransform;
+            rightPupil.style.transform = pupilTransform;
+
+            const tiltX = (deltaX / window.innerWidth) * 8;
+            const tiltY = (deltaY / window.innerHeight) * -8;
+            face.style.transform = `perspective(600px) rotateY(${tiltX}deg) rotateX(${tiltY}deg)`;
+        };
+
+        const onPointerMove = (event: any) => {
+            if (trackingLocked) return;
+            pointer.x = event.clientX;
+            pointer.y = event.clientY;
+            if (frameId) return;
+            frameId = requestAnimationFrame(applyPointer);
+        };
+
+        const prefersReducedMotion = window.matchMedia(
+            "(prefers-reduced-motion: reduce)",
+        ).matches;
+
+        if (!prefersReducedMotion) {
+            measure();
+            window.addEventListener("pointermove", onPointerMove, {
+                passive: true,
+            });
+            window.addEventListener("resize", measure, { passive: true });
+            window.addEventListener("scroll", measure, { passive: true });
+        }
+
+        pokeButton.addEventListener("click", () => {
+            const message =
+                pokeReactions[Math.floor(Math.random() * pokeReactions.length)];
+            statusText.textContent = message;
+
+            trackingLocked = true;
+            if (frameId) {
+                cancelAnimationFrame(frameId);
+                frameId = 0;
+            }
+
+            face.style.transform = "scale(1.08) rotate(-4deg)";
+            leftPupil.style.backgroundColor = "#ec4899";
+            rightPupil.style.backgroundColor = "#ec4899";
+
+            window.clearTimeout(reactionTimer);
+            reactionTimer = window.setTimeout(() => {
+                trackingLocked = false;
+                face.style.transform = "scale(1) rotate(0deg)";
+                leftPupil.style.backgroundColor = "";
+                rightPupil.style.backgroundColor = "";
+                measure();
+            }, 300);
+        });
+
+        document.addEventListener("mascot-search", (event) => {
+            if (!(event instanceof CustomEvent)) return;
+            const query = event.detail?.query;
+            if (typeof query !== "string" || query.length === 0) return;
+            statusText.textContent = `Targeting query: "${query}"`;
+        });
+    }
+
+    initMascot();
+</script>
