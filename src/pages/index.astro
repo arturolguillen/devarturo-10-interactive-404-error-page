@@ -4,6 +4,15 @@ import Layout from "../layouts/Layout.astro";
 import Header from "../components/Header.astro";
 import HeaderLogo from "../components/HeaderLogo.astro";
 import MainWrapper from "../components/MainWrapper.astro";
+import InteractiveRobot from "../components/InteractiveRobot.astro";
+import RobotErrorBadge from "../components/RobotErrorBadge.astro";
+import RobotErrorHeading from "../components/RobotErrorHeading.astro";
+import RobotErrorDescription from "../components/RobotErrorDescription.astro";
+import RobotSearchBar from "../components/RobotSearchBar.astro";
+import ActionButtonsWrapper from "../components/ActionButtonsWrapper.astro";
+import HomeButton from "../components/HomeButton.astro";
+import DocsButton from "../components/DocsButton.astro";
+import Footer from "../components/Footer.astro";
 ---
 
 <Layout>
@@ -12,6 +21,15 @@ import MainWrapper from "../components/MainWrapper.astro";
 		<HeaderLogo />
 	</Header>
 	<MainWrapper>
-		<h1>Hello World</h1>
+		<InteractiveRobot />
+		<RobotErrorBadge />
+		<RobotErrorHeading />
+		<RobotErrorDescription />
+		<RobotSearchBar />
+		<ActionButtonsWrapper>
+			<HomeButton />
+			<DocsButton />
+		</ActionButtonsWrapper>
 	</MainWrapper>
+	<Footer />
 </Layout>

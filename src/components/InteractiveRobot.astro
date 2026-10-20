@@ -1,0 +1,102 @@
+<section
+    aria-label="Interactive Mascot"
+    class="relative mb-6 select-none group"
+>
+    <!-- GlowRingBehindRobot -->
+    <div
+        class="absolute -inset-4 bg-linear-to-r from-indigo-500 to-violet-600 rounded-full blur-xl opacity-30 group-hover:opacity-50 transition duration-500 -z-1"
+    >
+    </div>
+
+    <!-- RobotCard -->
+    <div
+        class="relative w-44 h-44 sm:w-52 sm:h-52 bg-slate-900/90 border-2 border-indigo-500/30 rounded-3xl p-4 sm:p-5 flex flex-col items-center justify-between shadow-2xl backdrop-blur-xl transition-transform duration-150 ease-out"
+        style="transform: perspective(600px) rotateY(-1.73967deg) rotateX(-4.35198deg);"
+    >
+        <!-- RobotStatusAntennas -->
+        <div class="w-full flex items-center justify-between px-2 pt-1">
+            <div class="flex items-center gap-1.5">
+                <span class="w-2.5 h-2.5 rounded-full bg-rose-500 animate-ping"
+                ></span>
+                <span
+                    class="font-mono text-[10px] text-rose-400 tracking-wider uppercase font-semibold"
+                    >SIGNAL_LOST</span
+                >
+            </div>
+            <div class="flex gap-1">
+                <span class="w-1.5 h-1.5 rounded-full bg-slate-700"></span>
+                <span class="w-1.5 h-1.5 rounded-full bg-slate-700"></span>
+                <span
+                    class="w-1.5 h-1.5 rounded-full bg-indigo-500 animate-pulse"
+                ></span>
+            </div>
+        </div>
+
+        <!-- RobotVisor -->
+        <div
+            class="w-full bg-slate-950 border border-slate-800 rounded-2xl h-24 sm:h-28 flex items-center justify-center gap-6 px-4 shadow-inner relative overflow-hidden"
+        >
+            <!-- RobotDigitalScanlineOverlay -->
+            <div
+                class="absolute inset-0 bg-[linear-gradient(to_bottom,transparent_50%,rgba(0,0,0,0.6)_51%)] bg-[length:100%_4px] pointer-events-none opacity-40"
+            >
+            </div>
+
+            <!-- RobotLeftEyeSocket -->
+            <div
+                class="w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-slate-900 border border-indigo-500/40 flex items-center justify-center relative overflow-hidden shadow-inner"
+            >
+                <div
+                    id="left-pupil"
+                    class="w-4 h-4 sm:w-5 sm:h-5 rounded-full bg-cyan-400 shadow-[0_0_12px_rgba(34,211,238,0.9)] transition-transform duration-75 ease-out"
+                    style="transform: translate(-3.61134px, 8.24368px);"
+                >
+                </div>
+            </div>
+
+            <!-- RobotRightEyeSocket -->
+            <div
+                class="w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-slate-900 border border-indigo-500/40 flex items-center justify-center relative overflow-hidden shadow-inner"
+            >
+                <div
+                    id="right-pupil"
+                    class="w-4 h-4 sm:w-5 sm:h-5 rounded-full bg-cyan-400 shadow-[0_0_12px_rgba(34,211,238,0.9)] transition-transform duration-75 ease-out"
+                    style="transform: translate(-3.61134px, 8.24368px);"
+                >
+                </div>
+            </div>
+        </div>
+
+        <!-- RobotReactionSpeech -->
+        <div class="w-full pb-0.5">
+            <p
+                id="mascot-status"
+                class="font-mono text-[11px] text-indigo-300 tracking-wide bg-indigo-950/60 py-1 px-2.5 rounded-lg border border-indigo-800/40 truncate"
+            >
+                Move pointer to calibrate sensor
+            </p>
+        </div>
+    </div>
+
+    <!-- RobotInteractiveButton -->
+    <button
+        type="button"
+        class="mt-3 text-xs font-medium text-slate-400 hover:text-indigo-300 transition-colors inline-flex items-center gap-1.5 bg-slate-900/60 border border-slate-800 hover:border-slate-700 px-2.5 py-1 rounded-full cursor-pointer"
+    >
+        <svg
+            class="w-3.5 h-3.5 text-indigo-400"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+        >
+            <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M15 15l-2 5L9 9l11 4-5 2zm0 0l5 5M7.188 2.239l.777 2.897M5.136 7.965l-2.898-.777M13.95 4.05l-2.122 2.122m-5.657 5.656l-2.12 2.122"
+            >
+            </path>
+        </svg>
+        <span>Poke bot for reaction</span>
+    </button>
+</section>
